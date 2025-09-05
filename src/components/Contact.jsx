@@ -10,9 +10,11 @@ const Contact = () => {
     const timeline = gsap.timeline({
       scrollTrigger: {
         trigger: '#contact',
-        start: 'top center',
+        start: 'top top',
+        end: 'bottom top',
       },
       ease: 'power1.inOut',
+      scrub: true,
     });
 
     timeline.from(titleSplit.words, {
@@ -27,11 +29,11 @@ const Contact = () => {
       y: '-50',
       duration: 1,
       ease: 'power1.inOut',
-    }).to('#f-left-leaf', {
-      y: '-50',
+    }, 0).to('#f-left-leaf', {
+      y: '50',
       duration: 1,
       ease: 'power1.inOut',
-    }, '<');
+    }, 0);
   })
 
   return (
