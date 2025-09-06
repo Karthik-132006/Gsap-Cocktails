@@ -7,12 +7,32 @@ const Menu = () => {
   const contentRef = useRef();
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isRight, setIsRight] = useState(false);
 
   useGSAP(() => {
     gsap.fromTo('#title', { opacity: 0 }, { opacity: 1, duration: 1 });
-    gsap.fromTo('.cocktail img', { opacity: 0, xPercent: -100 }, { opacity: 1, duration: 1, xPercent: 0, ease: 'power1.inOut' });
-    gsap.fromTo('.details h2', { yPercent: 100, opacity: 0 }, { opacity: 100, yPercent: 0, ease: 'power1.inOut' });
-    gsap.fromTo('.details p', { yPercent: 100, opacity: 0 }, { opacity: 100, yPercent: 0, ease: 'power1.inOut' });
+
+    const xDir = isRight ? 100 : -100;
+
+    const tl = gsap.timeline({ defaults: { ease: 'power1.inOut' } });
+
+    tl.fromTo(
+      '.cocktail img',
+      { opacity: 0, xPercent: xDir },
+      { opacity: 1, xPercent: 0, duration: 1 }
+    )
+      .fromTo(
+        '.details h2',
+        { yPercent: 100, opacity: 0 },
+        { yPercent: 0, opacity: 1 },
+        "-=0.6" // overlap timing
+      )
+      .fromTo(
+        '.details p',
+        { yPercent: 100, opacity: 0 },
+        { yPercent: 0, opacity: 1 },
+        "-=0.4"
+      );
   }, [currentIndex]);
 
   const totalCocktails = sliderLists.length;
@@ -60,12 +80,12 @@ const Menu = () => {
 
       <div className="content">
         <div className="arrows">
-          <button className="text-left" onClick={() => goToSlide(currentIndex - 1)}>
+          <button className="text-left" onClick={() => {goToSlide(currentIndex - 1); setIsRight(true)}}>
             <span>{prevCocktail.name}</span>
             <img src="/images/right-arrow.png" alt="right-arrow" aria-hidden="true" />
           </button>
 
-          <button className="text-left" onClick={() => goToSlide(currentIndex + 1)}>
+          <button className="text-left" onClick={() => {goToSlide(currentIndex + 1); setIsRight(false)}}>
             <span>{nextCocktail.name}</span>
             <img src="/images/left-arrow.png" alt="left-arrow" aria-hidden="true" />
           </button>
